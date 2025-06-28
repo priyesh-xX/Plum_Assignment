@@ -1,7 +1,10 @@
-import { useState } from "react"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const QuizButtons = () => {
-  const [showPracticeModal, setShowPracticeModal] = useState(false)
+function QuizButtons() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [showPracticeModal, setShowPracticeModal] = useState(false);
 
   // Dummy quiz topics
   const quizTopics = [
@@ -10,22 +13,42 @@ const QuizButtons = () => {
     { id: 3, name: "India", description: "History, geography, and culture of India" },
     { id: 4, name: "BizTech", description: "Business, technology, and innovation" },
     { id: 5, name: "General", description: "General knowledge and current affairs" },
-  ]
+  ];
 
   // Dummy difficulty levels
   const difficultyLevels = [
     { id: 1, name: "Easy", color: "green" },
     { id: 2, name: "Medium", color: "yellow" },
     { id: 3, name: "Hard", color: "red" },
-  ]
+  ];
+
+  const handleChallengeClick = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:3000/api/quiz/challenge");
+      const data = await res.json();
+
+      if (data.success) {
+        navigate("/challenge", { state: { questions: data.questions } });
+      } else {
+        alert("Failed to fetch challenge questions");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error reaching the server.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4  justify-center items-center mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center items-center mt-6">
+
         {/* Practice Mode Button */}
         <div
           onClick={() => setShowPracticeModal(true)}
-          className="backdrop-blur-md bg-black/50 rounded-xl  p-6 border border-purple-900/50 shadow-lg hover:bg-black/60 transition-colors cursor-pointer group"
+          className="backdrop-blur-md bg-black/50 rounded-xl p-6 border border-purple-900/50 shadow-lg hover:bg-black/60 transition-colors cursor-pointer group"
         >
           <div className="flex flex-col items-center text-center">
             <div className="h-16 w-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -45,12 +68,17 @@ const QuizButtons = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Practice Mode</h3>
-            <p className="text-gray-300">Practice quizzes on any topic without affecting your XP or level.</p>
+            <p className="text-gray-300">
+              Practice quizzes on any topic without affecting your XP or level.
+            </p>
           </div>
         </div>
 
         {/* Challenge Mode Button */}
-        <div className="backdrop-blur-md bg-black/50 rounded-xl p-6 border border-purple-900/50 shadow-lg hover:bg-black/60 transition-colors cursor-pointer group">
+        <div
+          onClick={handleChallengeClick}
+          className="backdrop-blur-md bg-black/50 rounded-xl p-6 border border-purple-900/50 shadow-lg hover:bg-black/60 transition-colors cursor-pointer group"
+        >
           <div className="flex flex-col items-center text-center">
             <div className="h-16 w-16 rounded-full bg-gradient-to-r from-pink-500 to-red-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <svg
@@ -69,7 +97,11 @@ const QuizButtons = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Challenge Mode</h3>
-            <p className="text-gray-300">Timed quizzes with XP rewards and streak bonuses. Test your limits!</p>
+            <p className="text-gray-300">
+              {loading
+                ? "Generating challenge questions..."
+                : "Timed quizzes with XP rewards and streak bonuses. Test your limits!"}
+            </p>
           </div>
         </div>
       </div>
@@ -89,7 +121,12 @@ const QuizButtons = () => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
               </svg>
             </button>
 
@@ -120,8 +157,8 @@ const QuizButtons = () => {
                       level.color === "green"
                         ? "bg-green-900/30 hover:bg-green-800/50 border-green-700/50"
                         : level.color === "yellow"
-                          ? "bg-yellow-900/30 hover:bg-yellow-800/50 border-yellow-700/50"
-                          : "bg-red-900/30 hover:bg-red-800/50 border-red-700/50"
+                        ? "bg-yellow-900/30 hover:bg-yellow-800/50 border-yellow-700/50"
+                        : "bg-red-900/30 hover:bg-red-800/50 border-red-700/50"
                     }`}
                   >
                     <span className="font-medium text-white">{level.name}</span>
@@ -139,7 +176,8 @@ const QuizButtons = () => {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default QuizButtons
+export default QuizButtons;
+// This component provides buttons for Practice Mode and Challenge Mode quizzes.

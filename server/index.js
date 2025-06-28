@@ -3,16 +3,17 @@ import cors from"cors";
 import dotenv from "dotenv";
 import {pool} from "./db/db.js"
 
-import quizRoutes from "./routes/quiz.js";
+// import quizRoutes from "./routes/quiz.js";
 import userRoutes from "./routes/user.js";
 import practiceQuizRoutes from "./routes/practiceQuiz.js";
+import quizRoutes from "./routes/quizRoutes.js";
 
 //loading env variables
 dotenv.config();
 
 
 const app=express();
-const PORT=3000 || process.env.PORT; //get the one stored in .env file
+const PORT=process.env.PORT; //get the one stored in .env file
 
 //middleware
 app.use(cors());
@@ -31,8 +32,8 @@ app.get('/api/Test',(req,res)=>{
     res.json({message: "this is a test"});
 })
 
-app.use('/api/quiz',quizRoutes);
-
+app.use('/api/quiz', quizRoutes);
+// “For every request that starts with /api/quiz, use the routes defined in quizRoutes.”
 app.use('/api/users',userRoutes);
 
 app.use('/api/practice',practiceQuizRoutes);
