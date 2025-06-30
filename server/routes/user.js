@@ -8,6 +8,7 @@ const router=express.Router();
 router.get('/',getAllUsers);
 
 router.get('/:id',getUserById);
+
 //CRUD
 router.post('/',createUser);
 

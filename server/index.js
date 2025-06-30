@@ -3,9 +3,11 @@ import cors from"cors";
 import dotenv from "dotenv";
 import {pool} from "./db/db.js"
 
+//import quizRoutes from "./routes/quiz.js";
 // import quizRoutes from "./routes/quiz.js";
 import userRoutes from "./routes/user.js";
 import practiceQuizRoutes from "./routes/practiceQuiz.js";
+import xpRoutes from "./routes/xp.js";
 import quizRoutes from "./routes/quizRoutes.js";
 
 //loading env variables
@@ -32,12 +34,15 @@ app.get('/api/Test',(req,res)=>{
     res.json({message: "this is a test"});
 })
 
+//app.use('/api/quiz',quizRoutes);
+
 app.use('/api/quiz', quizRoutes);
 // “For every request that starts with /api/quiz, use the routes defined in quizRoutes.”
 app.use('/api/users',userRoutes);
 
 app.use('/api/practice',practiceQuizRoutes);
 
+app.use('/api/xp',xpRoutes);
 
 //404 handler (unknown route)
 app.use((req,res)=>{

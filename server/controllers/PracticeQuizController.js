@@ -1,13 +1,34 @@
 import {pool} from "../db/db.js";
 
 //get all quizzes
+// export const getAllQuizsets=async(req,res)=>{
+//     try{
+//         const result=await pool.query("SELECT * FROM practice_quizzes ORDER BY uploaded_at DESC");//latest
+//         res.status(200).json(result.rows);//ok(returned)
+//     }catch(error){
+//         console.error("Error fetching quizsets",error);
+//         res.status(500).json({error:"Internal server error"});
+//     }
+// };
+
 export const getAllQuizsets=async(req,res)=>{
+    const {topic} = req.query;
     try{
-        const result=await pool.query("SELECT * FROM practice_quizzes ORDER BY uploaded_at DESC");//latest
-        res.status(200).json(result.rows);//ok(returned)
-    }catch(error){
-        console.error("Error fetching quizsets",error);
-        res.status(500).json({error:"Internal server error"});
+        let result;
+
+        if(topic){
+            result=await pool.query(
+                "SELECT* FROM practice_quizzes WHERE UPPER(topic)=UPPER($1) ORDER BY uploaded_at DESC",
+                [topic]
+            );
+        }else{
+            //no topic filter
+            result= await pool.query("SELECT* FROM practice_quizzes ORDER BY uploaded_at DESC");
+        }
+        res.status(200).json(result.rows);
+    }catch(err){
+        console.error("Error fetching quizsets", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 

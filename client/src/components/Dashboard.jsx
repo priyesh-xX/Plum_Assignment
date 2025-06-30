@@ -9,15 +9,51 @@ import PremiumTeaser from "./PremiumTeaser"
 import About from "./About"
 import Contact from "./Contact"
 
+import QuizResult from "./QuizResult.jsx"
+
+import React,{useEffect,useState} from 'react';
+import { fetchUserById } from '../api/userApi.js';
+import { fetchUserXP } from "../api/userApi.js"
+
 const Dashboard = () => {
   // Dummy user data
-  const user = {
-    name: "John Smith",
-    level: 12,
-    xp: 3450,
-    totalXp: 4000,
-    isPremium: false,
-  }
+  // const user = { 
+  //   name: "John Smith",
+  //   level: 12,
+  //   xp: 3450,
+  //   totalXp: 4000,
+  //   isPremium: false,
+  // }
+
+  const [user, setUser]=useState(null);
+  const [loading,setLoading]=useState(true);
+  const userId=3;//temp
+
+  useEffect(()=>{
+    const fetchUserData=async() =>{
+      try{
+        const basicData=await fetchUserById(userId);//gets user info
+        const xpData=await fetchUserXP(userId);//get user XP
+
+        // setUser(userData);//update local state with fetched data
+        setUser({  //now user has both info
+        ...basicData,
+        xp: xpData.xp,
+        level: xpData.level
+      });
+      }catch(error){
+        console.error("Failed to fetch user:",error);
+      }finally{
+        setLoading(false);//stop loading
+      }
+    }
+    fetchUserData()
+  },[]);
+
+
+  if (loading) return <div className="text-center pt-20 text-white">Loading...</div>//while loading
+  if (!user) return <div className="text-center pt-20 text-red-500">User not found</div>
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-950 to-gray-950 text-gray-200">
@@ -29,6 +65,11 @@ const Dashboard = () => {
             <NewsCarousel />
             <EventsSection />
             <QuizButtons />
+
+            
+          {/* ✅ TEMP: Show Quiz Result */}
+          <QuizResult userId={3} xpGained={50} />
+          
             {!user.isPremium && <PremiumTeaser />}
           </div>
 
