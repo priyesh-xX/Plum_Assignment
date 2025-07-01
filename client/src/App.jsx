@@ -12,6 +12,8 @@ import "./index.css";
 import ChallengeQuizPage from "./components/ChallengeQuizPage";
 import Subscriptions from "./components/Subscription";
 
+import NewsAdmin from "./components/NewsAdmin";
+
 import "./index.css";
 
 function App() {
@@ -73,6 +75,8 @@ console.log("App rendering with user:", user);
             <Route path="/profile/:id/edit" element={<UserProfile editable={true} />} />
             <Route path="/challenge" element={<ChallengeQuizPage />} />
             <Route path="/upgrade" element={<Subscriptions />} />
+
+            <Route path="/admin/news" element={<NewsAdmin />} />
           </>
         )}
 

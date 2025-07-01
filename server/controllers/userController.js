@@ -72,35 +72,14 @@ export const createUser= async(req,res)=>{
     }
 };
 
-// export const updateUser = async(req, res) => {
-//     try{
-//         const {id}=req.params;
-//         const {username,email,password}=req.body;
-
-//         const updatedUser= await pool.query(
-//             'UPDATE users SET username=$1, email=$2, password=$3 WHERE id=$4 RETURNING *',
-//             [username,email,password,id]
-//         );
-
-//         if(updatedUser.rows.length===0){ //no user updated
-//             return res.status(404).json({error:'User not found'});
-//         }
-//         res.json(updatedUser.rows[0]);//send back updated user detail
-//     }catch(error){
-//         console.log(error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// };
-
-
 export const updateUser = async(req, res) => {
     try{
         const {id}=req.params;
-        const {username,email}=req.body;
+        const {username,email,password}=req.body;
 
         const updatedUser= await pool.query(
-            'UPDATE users SET username=$1, email=$2 WHERE id=$3 RETURNING *',
-            [username,email,id]
+            'UPDATE users SET username=$1, email=$2, password=$3 WHERE id=$4 RETURNING *',
+            [username,email,password,id]
         );
 
         if(updatedUser.rows.length===0){ //no user updated
@@ -112,6 +91,27 @@ export const updateUser = async(req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+
+// export const updateUser = async(req, res) => {
+//     try{
+//         const {id}=req.params;
+//         const {username,email}=req.body;
+
+//         const updatedUser= await pool.query(
+//             'UPDATE users SET username=$1, email=$2 WHERE id=$3 RETURNING *',
+//             [username,email,id]
+//         );
+
+//         if(updatedUser.rows.length===0){ //no user updated
+//             return res.status(404).json({error:'User not found'});
+//         }
+//         res.json(updatedUser.rows[0]);//send back updated user detail
+//     }catch(error){
+//         console.log(error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// };
 
 export const deleteUser= async (req,res)=>{
     try{
