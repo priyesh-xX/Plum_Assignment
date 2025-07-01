@@ -10,6 +10,7 @@ import practiceQuizRoutes from "./routes/practiceQuiz.js";
 import xpRoutes from "./routes/xp.js";
 import quizRoutes from "./routes/quizRoutes.js";
 import newsRoutes from "./routes/newsRoutes.js";
+import stripeRoutes from "./routes/stripeRoutes.js";
 
 //loading env variables
 dotenv.config();
@@ -46,6 +47,8 @@ app.use('/api/practice',practiceQuizRoutes);
 app.use('/api/xp',xpRoutes);
 
 app.use('/api/news',newsRoutes);
+app.use("/api/stripe", stripeRoutes);
+
 
 //404 handler (unknown route)
 app.use((req,res)=>{
