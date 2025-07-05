@@ -3,29 +3,29 @@ import { fetchAllNews,postNews } from "../api/newsApi"
 
 const NewsCarousel = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [news, setNews] = useState([]);
+  // const [news, setNews] = useState([]);
 
   // Dummy news data
-  // const news = [
-  //   {
-  //     id: 1,
-  //     title: "New Quiz Categories Added!",
-  //     content: "We've added 5 new categories to our quiz database including Astronomy and World History.",
-  //     date: "2 days ago",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Quiz Club Meeting This Friday",
-  //     content: "Join us for our monthly quiz club meeting this Friday at 5 PM in the main auditorium.",
-  //     date: "1 week ago",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Congratulations to Quiz Champions",
-  //     content: "Congratulations to Team Brainiacs for winning the inter-college quiz competition!",
-  //     date: "2 weeks ago",
-  //   },
-  // ]
+  const news = [
+    {
+      id: 1,
+      title: "New Quiz Categories Added!",
+      content: "We've added 5 new categories to our quiz database including Astronomy and World History.",
+      date: "2 days ago",
+    },
+    {
+      id: 2,
+      title: "Quiz Club Meeting This Friday",
+      content: "Join us for our monthly quiz club meeting this Friday at 5 PM in the main auditorium.",
+      date: "1 week ago",
+    },
+    {
+      id: 3,
+      title: "Congratulations to Quiz Champions",
+      content: "Congratulations to Team Brainiacs for winning the inter-college quiz competition!",
+      date: "2 weeks ago",
+    },
+  ]
 
   // Auto-rotate carousel
   useEffect(() => {

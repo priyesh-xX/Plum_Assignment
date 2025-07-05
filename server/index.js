@@ -2,6 +2,8 @@ import express from "express";
 import cors from"cors";
 import dotenv from "dotenv";
 import {pool} from "./db/db.js"
+import cookieParser from "cookie-parser";
+
 
 //import quizRoutes from "./routes/quiz.js";
 // import quizRoutes from "./routes/quiz.js";
@@ -20,8 +22,13 @@ const app=express();
 const PORT=process.env.PORT; //get the one stored in .env file
 
 //middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // ✅ allow your frontend origin
+  credentials: true,               // ✅ allow cookies and headers
+}));
 app.use(express.json());
+app.use(cookieParser()); // use cookie-parser
+
 
 //app.use(express.urlencoded({extended:true}));
 
@@ -36,11 +43,13 @@ app.get('/api/Test',(req,res)=>{
     res.json({message: "this is a test"});
 })
 
-//app.use('/api/quiz',quizRoutes);
 
 app.use('/api/quiz', quizRoutes);
 // “For every request that starts with /api/quiz, use the routes defined in quizRoutes.”
 app.use('/api/users',userRoutes);
+
+
+
 
 app.use('/api/practice',practiceQuizRoutes);
 

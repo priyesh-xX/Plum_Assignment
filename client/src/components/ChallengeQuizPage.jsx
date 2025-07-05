@@ -92,7 +92,7 @@ function ChallengeQuizPage() {
           <p className="text-purple-400 text-xl mb-6">XP Earned: {xp} 🧠</p>
           <button
             className="px-6 py-2 bg-purple-700 hover:bg-purple-800 rounded"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/dashboard')}
           >
             Back to Home
           </button>

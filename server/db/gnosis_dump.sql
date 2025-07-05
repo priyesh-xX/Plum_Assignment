@@ -1,6 +1,7 @@
 -- Clean Gnosis Database Schema (without database creation)
 -- Run this after creating the 'Gnosis' database
 
+-- General Settings
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -12,12 +13,11 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+-- Default Storage Settings
 SET default_tablespace = '';
 SET default_table_access_method = heap;
 
--- Create Tables
-
--- Users table
+-- USERS TABLE
 CREATE TABLE public.users (
     id integer NOT NULL,
     username character varying(100) NOT NULL,
@@ -29,17 +29,11 @@ CREATE TABLE public.users (
 );
 
 CREATE SEQUENCE public.users_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
+    START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
--- Practice Quizzes table
+-- PRACTICE_QUIZZES TABLE
 CREATE TABLE public.practice_quizzes (
     id integer NOT NULL,
     title text NOT NULL,
@@ -47,21 +41,15 @@ CREATE TABLE public.practice_quizzes (
     file_url text NOT NULL,
     description text,
     uploaded_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT practice_quizzes_topic_check CHECK ((topic = ANY (ARRAY['MELA'::text, 'SPORTS'::text, 'INDIA'::text, 'GEN'::text, 'BIZTECH'::text, 'OTHERS'::text])))
+    CONSTRAINT practice_quizzes_topic_check CHECK ((topic = ANY (ARRAY['MELA', 'SPORTS', 'INDIA', 'GEN', 'BIZTECH', 'OTHERS'])))
 );
 
 CREATE SEQUENCE public.practice_quizzes_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
+    START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
 ALTER SEQUENCE public.practice_quizzes_id_seq OWNED BY public.practice_quizzes.id;
 ALTER TABLE ONLY public.practice_quizzes ALTER COLUMN id SET DEFAULT nextval('public.practice_quizzes_id_seq'::regclass);
 
--- User XP table
+-- USER_XP TABLE
 CREATE TABLE public.user_xp (
     id integer NOT NULL,
     user_id integer,
@@ -70,17 +58,11 @@ CREATE TABLE public.user_xp (
 );
 
 CREATE SEQUENCE public.user_xp_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
+    START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
 ALTER SEQUENCE public.user_xp_id_seq OWNED BY public.user_xp.id;
 ALTER TABLE ONLY public.user_xp ALTER COLUMN id SET DEFAULT nextval('public.user_xp_id_seq'::regclass);
 
--- News table
+-- NEWS TABLE
 CREATE TABLE public.news (
     id integer NOT NULL,
     title text NOT NULL,
@@ -89,60 +71,50 @@ CREATE TABLE public.news (
 );
 
 CREATE SEQUENCE public.news_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
+    START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
 ALTER SEQUENCE public.news_id_seq OWNED BY public.news.id;
 ALTER TABLE ONLY public.news ALTER COLUMN id SET DEFAULT nextval('public.news_id_seq'::regclass);
 
--- Add Primary Keys
+-- PRIMARY KEYS & CONSTRAINTS
 ALTER TABLE ONLY public.users ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.users ADD CONSTRAINT users_email_key UNIQUE (email);
 ALTER TABLE ONLY public.users ADD CONSTRAINT users_username_key UNIQUE (username);
 
 ALTER TABLE ONLY public.practice_quizzes ADD CONSTRAINT practice_quizzes_pkey PRIMARY KEY (id);
-
 ALTER TABLE ONLY public.user_xp ADD CONSTRAINT user_xp_pkey PRIMARY KEY (id);
-
 ALTER TABLE ONLY public.news ADD CONSTRAINT news_pkey PRIMARY KEY (id);
 
--- Add Foreign Keys
-ALTER TABLE ONLY public.user_xp ADD CONSTRAINT user_xp_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+-- FOREIGN KEYS
+ALTER TABLE ONLY public.user_xp
+    ADD CONSTRAINT user_xp_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
--- Insert Sample Data
-INSERT INTO public.users VALUES 
-    (3, 'updateduser22', 'updatedemail@example.com', 'newpassword123', 'user', '2025-04-23 01:03:53.33824', 0),
-    (5, 'Alice', 'alic2e@example.com', '12344', 'user', '2025-06-07 15:47:32.668807', 0),
-    (6, 'Bob', 'bob@example.com', '4535435', 'user', '2025-06-07 15:47:32.668807', 0),
-    (7, 'Charlie', 'charlie@example.com', '324324', 'user', '2025-06-07 15:47:32.668807', 0);
+-- SAMPLE DATA
+-- ✅ 1 test user
+INSERT INTO public.users (username, email, password, role, created_at, xp)
+VALUES ('testuser', 'test@example.com', 'testpassword', 'user', NOW(), 100);
 
-INSERT INTO public.practice_quizzes VALUES 
-    (1, 'IPL 2023 Archives', 'SPORTS', 'https://drive.google.com/file/d/ipl2023quiz', 'Quiz set based on IPL 2023', '2025-05-06 11:41:04.166885'),
-    (2, 'Startup India Set', 'BIZTECH', 'https://drive.google.com/file/d/biztechstartups', 'Quiz set on startups and unicorns in India', '2025-05-06 11:41:04.166885'),
-    (3, 'Freedom Fighters', 'INDIA', 'https://drive.google.com/file/d/indianfreedom', 'Quiz on Indian independence movement', '2025-05-06 11:41:04.166885'),
-    (4, 'Festival Mania', 'MELA', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Quiz covering Indian fairs and festivals', '2025-05-06 11:41:04.166885'),
-    (5, 'Mixed Bag - 2022', 'GEN', 'https://drive.google.com/file/d/mixedbag2022', 'General trivia from 2022', '2025-05-06 11:41:04.166885'),
-    (6, 'SpaceX Launches', 'OTHERS', 'https://drive.google.com/file/d/spacexlaunches', 'Quirky quiz on modern space tech', '2025-05-06 11:41:04.166885'),
-    (7, 'MELA Archive Set 2023', 'MELA', 'https://example.com/mela-set.pdf', NULL, '2025-05-06 11:51:52.866002'),
-    (13, 'testing quiz', 'GEN', 'https://example.com/test-set.pdf', 'new testing', '2025-05-06 12:29:06.813577'),
-    (14, 'MELA Dummy Quiz Set', 'MELA', 'https://www.africau.edu/images/default/sample.pdf', 'Sample test PDF to verify quiz opening', '2025-06-21 14:17:12.266293');
+-- ✅ 1 XP row for testuser
+INSERT INTO public.user_xp (user_id, xp, level)
+VALUES (1, 100, 2);
 
-INSERT INTO public.user_xp VALUES 
-    (3, 3, 8860, 89),
-    (5, 5, 80, 1);
+-- ✅ Quizzes
+INSERT INTO public.practice_quizzes (title, topic, file_url, description, uploaded_at) VALUES
+('IPL 2023 Archives', 'SPORTS', 'https://drive.google.com/file/d/ipl2023quiz', 'Quiz set based on IPL 2023', NOW()),
+('Startup India Set', 'BIZTECH', 'https://drive.google.com/file/d/biztechstartups', 'Quiz set on startups and unicorns in India', NOW()),
+('Freedom Fighters', 'INDIA', 'https://drive.google.com/file/d/indianfreedom', 'Quiz on Indian independence movement', NOW()),
+('Festival Mania', 'MELA', 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Quiz covering Indian fairs and festivals', NOW()),
+('Mixed Bag - 2022', 'GEN', 'https://drive.google.com/file/d/mixedbag2022', 'General trivia from 2022', NOW()),
+('SpaceX Launches', 'OTHERS', 'https://drive.google.com/file/d/spacexlaunches', 'Quirky quiz on modern space tech', NOW());
 
-INSERT INTO public.news VALUES 
-    (1, 'New Quiz Categories Added!', 'We have added 5 new quiz categories like Astronomy and World History.', '2025-07-01 16:31:21.486357'),
-    (2, 'Upcoming Quiz Club Meet!', 'Join us this Friday for an exciting discussion on quizzing.', '2025-07-01 16:31:21.486357'),
-    (3, 'Winners Announced', 'Team Brainiacs have won the intercollege quiz championship!', '2025-07-01 16:31:21.486357'),
-    (4, 'New Feature Announcement', 'We''re launching a new leaderboard system this weekend!', '2025-07-01 16:35:26.521462');
+-- ✅ News
+INSERT INTO public.news (title, content, date) VALUES
+('New Quiz Categories Added!', 'We have added 5 new quiz categories like Astronomy and World History.', NOW()),
+('Upcoming Quiz Club Meet!', 'Join us this Friday for an exciting discussion on quizzing.', NOW()),
+('Winners Announced', 'Team Brainiacs have won the intercollege quiz championship!', NOW()),
+('New Feature Announcement', 'We''re launching a new leaderboard system this weekend!', NOW());
 
--- Update sequences to current values
-SELECT pg_catalog.setval('public.news_id_seq', 4, true);
-SELECT pg_catalog.setval('public.practice_quizzes_id_seq', 14, true);
-SELECT pg_catalog.setval('public.user_xp_id_seq', 8, true);
-SELECT pg_catalog.setval('public.users_id_seq', 7, true);
+-- ✅ Fix sequences (critical)
+SELECT pg_catalog.setval('public.users_id_seq', (SELECT MAX(id) FROM public.users), true);
+SELECT pg_catalog.setval('public.user_xp_id_seq', (SELECT MAX(id) FROM public.user_xp), true);
+SELECT pg_catalog.setval('public.practice_quizzes_id_seq', (SELECT MAX(id) FROM public.practice_quizzes), true);
+SELECT pg_catalog.setval('public.news_id_seq', (SELECT MAX(id) FROM public.news), true);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
+
 import { fetchUserById, updateUserProfile } from '../api/userApi';
 
 const UserProfile = () => {
@@ -90,7 +91,7 @@ const UserProfile = () => {
           )}
         </div>
         
-        <div>
+        {/* <div>
           <label className="block font-semibold text-purple-400">Password:</label>
           {isEditing ? (
             <input
@@ -103,7 +104,7 @@ const UserProfile = () => {
           ) : (
             <p>{user.password}</p>
           )}
-        </div>
+        </div> */}
 
         <div>
           <span className="font-semibold text-purple-400">XP: </span>

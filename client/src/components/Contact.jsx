@@ -5,7 +5,7 @@ const Contact = () => {
   
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <p className="mb-4">
+            <p className="mb-4 text-gray-300">
               Have questions, feedback, or need support? We'd love to hear from you! Fill out the form and we'll get back
               to you as soon as possible.
             </p>

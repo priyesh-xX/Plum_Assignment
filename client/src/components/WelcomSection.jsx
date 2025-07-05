@@ -5,7 +5,7 @@ const WelcomeSection = ({ user }) => {
       <div className="backdrop-blur-md bg-black/50 rounded-xl p-6 border border-purple-900/50 shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Welcome back, {user.name}!</h1>
+            <h1 className="text-2xl font-bold text-white">Welcome back {user.name}!</h1>
             <p className="text-purple-300 mt-1">Ready to challenge your knowledge today?</p>
           </div>
   
