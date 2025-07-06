@@ -10,7 +10,6 @@ import {
   Star,
   Target,
 } from "lucide-react";
-import { Eye } from "lucide-react";
 import { User } from "lucide-react";
 
 
@@ -45,20 +44,20 @@ export default function LandingPage() {
   ];
 
 
-  const quotes = [
-    {
-      text: "The important thing is not to stop questioning. Curiosity has its own reason for existing.",
-      author: "Albert Einstein",
-    },
-    {
-      text: "Knowledge is power, but enthusiasm pulls the switch.",
-      author: "Ivern Ball",
-    },
-    {
-      text: "The more that you read, the more things you will know. The more that you learn, the more places you'll go.",
-      author: "Dr. Seuss",
-    },
-  ];
+  // const quotes = [
+  //   {
+  //     text: "The important thing is not to stop questioning. Curiosity has its own reason for existing.",
+  //     author: "Albert Einstein",
+  //   },
+  //   {
+  //     text: "Knowledge is power, but enthusiasm pulls the switch.",
+  //     author: "Ivern Ball",
+  //   },
+  //   {
+  //     text: "The more that you read, the more things you will know. The more that you learn, the more places you'll go.",
+  //     author: "Dr. Seuss",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen overflow-hidden bg-gradient-to-l from-purple-900  to-gray-900">
@@ -73,7 +72,7 @@ export default function LandingPage() {
                 }
                 className="flex items-center space-x-2 cursor-pointer"
               >
-                <Eye className="h-8 w-8 text-purple-400" />
+                <img src="/logo.png" alt="Logo" className="w-10 h-10 object-cover scale-150 translate-y-1.5" />
                 <span className="text-2xl font-bold text-white">Gnosis</span>
               </div>
 
@@ -168,7 +167,6 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="bg-gray-800/50 border-purple-800/30">
               <CardContent className="p-6 text-center">
-                <Eye className="h-12 w-12 text-purple-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
                   Intellectual Growth
                 </h3>
@@ -348,7 +346,7 @@ export default function LandingPage() {
             Join Gnosis today and become part of a community that celebrates
             knowledge, curiosity, and the joy of learning.
           </p>
-          <RouterLink href="/signup">
+          <RouterLink to ="/signup">
             <Button
               size="lg"
               className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3"
@@ -368,11 +366,11 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Eye className="h-6 w-6 text-purple-400" />
+             <img src="/logo.png" alt="Logo" className="w-10 h-10 object-cover scale-100 translate-y-1"/>
                 <span className="text-xl font-bold text-white">Gnosis</span>
               </div>
               <p className="text-gray-400">
-                Empowering minds through the art of questioning.
+               Join us in exploring the world of knowledge, one quiz at a time.
               </p>
             </div>
             <div>

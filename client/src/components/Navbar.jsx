@@ -17,7 +17,8 @@ const Navbar = ({ navigateTo, onLogout, currentPage,userId}) => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <button onClick={() => navigateTo("dashboard")} className="flex items-center">
-              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              <img src="/logo.png" alt="Logo" className="w-10 h-10 object-cover  scale-100 translate-y-1"/>
+          <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
                 Gnosis
               </span>
             </button>

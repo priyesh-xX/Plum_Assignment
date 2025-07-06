@@ -14,6 +14,7 @@ function ChallengeQuizPage() {
   const [submitted, setSubmitted] = useState(false);
   const [xp, setXp] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
+  const [evaluationResults, setEvaluationResults] = useState([]);
 
   // Timer effect
   useEffect(() => {
@@ -39,18 +40,90 @@ function ChallengeQuizPage() {
     updated[index] = value;
     setUserAnswers(updated);
   };
+const STOP_WORDS = new Set([
+  "a",
+  "an",
+  "the",
+  "is",
+  "am",
+  "are",
+  "was",
+  "were",
+  "of",
+  "to",
+  "in",
+  "on",
+  "for",
+  "and",
+  "or",
+  "with",
+  "at",
+  "by",
+  "from",
+  "as",
+  "that",
+  "this",
+  "such",
+  "it",
+  "their",
+  "they",
+  "he",
+  "she",
+  "we",
+  "you",
+  "my",
 
-  const handleSubmit = () => {
-    let correct = 0;
-    questions.forEach((q, i) => {
-      const userAns = userAnswers[i]?.trim().toLowerCase();
-      const correctAns = q.answer?.trim().toLowerCase();
-      if (userAns === correctAns) correct++;
+]);
+
+const getKeywords = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, "") // Remove punctuation
+    .split(/\s+/)
+    .filter((word) => word && !STOP_WORDS.has(word));
+};
+
+ const handleSubmit = () => {
+  let correct = 0;
+  const results = [];
+
+  questions.forEach((q, i) => {
+    const userText = userAnswers[i] || "";
+
+    const correctKeywordArr = getKeywords(q.answer || "");
+    const correctKeywords = new Set(correctKeywordArr);
+
+    const userKeywords = new Set(getKeywords(userText));
+
+    let matchCount = 0;
+    for (let word of userKeywords) {
+      if (correctKeywords.has(word)) {
+        matchCount++;
+      }
+    }
+
+    // If only 1 correct keyword → 1 match is enough or we need at least 2 matches
+    const isCorrect =
+      (correctKeywordArr.length === 1 && matchCount >= 1) || matchCount >= 2;
+
+    if (isCorrect) correct++;
+
+    results.push({
+      question: q.question,
+      userAnswer: userText,
+      correctAnswer: q.answer,
+      isCorrect,
+      matchedKeywords: matchCount,
     });
-    setCorrectCount(correct);
-    setXp(correct * 10);
-    setSubmitted(true);
-  };
+  });
+
+  setEvaluationResults(results);
+  setCorrectCount(correct);
+  setXp(correct * 10);
+  setSubmitted(true);
+};
+
+
 
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60);
@@ -84,18 +157,57 @@ function ChallengeQuizPage() {
       </div>
 
       {submitted ? (
-        <div className="bg-gray-900 p-6 rounded-lg border border-purple-700 shadow-xl text-center">
-          <h2 className="text-2xl font-bold mb-4">✅ Quiz Completed!</h2>
-          <p className="text-green-400 text-xl mb-2">
+        <div className="bg-gray-900 p-6 rounded-lg border border-purple-700 shadow-xl text-left">
+          <h2 className="text-2xl font-bold mb-4 text-center">
+            ✅ Quiz Completed!
+          </h2>
+          <p className="text-green-400 text-lg mb-1 text-center">
             Correct Answers: {correctCount} / {questions.length}
           </p>
-          <p className="text-purple-400 text-xl mb-6">XP Earned: {xp} 🧠</p>
-          <button
-            className="px-6 py-2 bg-purple-700 hover:bg-purple-800 rounded"
-            onClick={() => navigate('/dashboard')}
-          >
-            Back to Home
-          </button>
+          <p className="text-purple-400 text-lg mb-6 text-center">
+            XP Earned: {xp} 🧠
+          </p>
+
+          <div className="space-y-6">
+            {evaluationResults.map((res, i) => (
+              <div
+                key={i}
+                className={`p-4 rounded-lg ${
+                  res.isCorrect ? "bg-green-900/30" : "bg-red-900/30"
+                }`}
+              >
+                <p className="font-semibold mb-1 text-white">
+                  Q{i + 1}: {res.question}
+                </p>
+                <p className="text-sm text-gray-300 mb-1">
+                  <span className="font-medium">Your Answer:</span>{" "}
+                  {res.userAnswer}
+                </p>
+                <p className="text-sm text-gray-300 mb-1">
+                  <span className="font-medium">Correct Answer:</span>{" "}
+                  {res.correctAnswer}
+                </p>
+                <p
+                  className={`text-sm font-bold ${
+                    res.isCorrect ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {res.isCorrect ? "✅ Correct" : "❌ Incorrect"} (
+                  {res.matchedKeywords} keyword match
+                  {res.matchedKeywords !== 1 ? "es" : ""})
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              className="mt-6 px-6 py-2 bg-purple-700 hover:bg-purple-800 rounded"
+              onClick={() => navigate("/dashboard")}
+            >
+              Back to Home
+            </button>
+          </div>
         </div>
       ) : (
         <form
