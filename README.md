@@ -2,6 +2,7 @@
 
 Gnosis is an intelligent, full-stack quizzing platform built for our university’s quizzing club. It enables users to practice topic-wise quizzes, take AI-generated challenge mode tests, and track their performance through an XP-based gamification system. It is designed for scalability, interactivity, and a seamless quiz experience.
 
+![alt text](images/image.png)
 ---
 
 ## 🚀 Features
@@ -17,6 +18,8 @@ Gnosis is an intelligent, full-stack quizzing platform built for our university�
   - Keyword matching
   - Fuzzy string similarity (Dice’s Coefficient via string similarity libraries)
 - Detailed performance report with strengths and areas to improve
+
+![alt text](images/image-1.png)
 
 ### 🧾 XP & Credit System
 - Users earn XP for activities like logging in and completing challenges
@@ -34,6 +37,7 @@ Gnosis is an intelligent, full-stack quizzing platform built for our university�
 - Integrated `timeme.js` to track active time spent on quizzes
 - Helps measure real engagement and quiz-taking behavior
 
+![alt text](images/image-2.png)
 ---
 
 ## 💻 Tech Stack
