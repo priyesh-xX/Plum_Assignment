@@ -9,6 +9,7 @@ import {
   Award,
   Star,
   Target,
+  Instagram
 } from "lucide-react";
 import { User } from "lucide-react";
 
@@ -376,11 +377,31 @@ export default function LandingPage() {
             <div>
               <h4 className="text-white font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>About Us</li>
-                <li>Testimonials</li>
+                <li>
+                  <ScrollLink
+                    to="about"
+                    smooth={true}
+                    duration={600}
+                    offset={-80}
+                    className="cursor-pointer hover:text-purple-400 transition-colors"
+                  >
+                    About Us
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    to="testimonials"
+                    smooth={true}
+                    duration={600}
+                    offset={-80}
+                    className="cursor-pointer hover:text-purple-400 transition-colors"
+                  >
+                    Testimonials
+                  </ScrollLink>
+                </li>
                 <li>
                   <RouterLink
-                    href="/signup"
+                    to="/signup"
                     className="hover:text-purple-400 transition-colors"
                   >
                     Join Now
@@ -402,20 +423,24 @@ export default function LandingPage() {
             <div>
               <h4 className="text-white font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="text-gray-400 hover:text-purple-400"
-                >
-                  <Twitter className="h-5 w-5" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="text-gray-400 hover:text-purple-400"
-                >
-                  <Github className="h-5 w-5" />
-                </Button>
+                <a href="https://www.instagram.com/gnosis_mnnit/" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-gray-400 hover:text-purple-400"
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </Button>
+                </a> 
+                <a href="https://github.com/dhruvm911/Gnosis" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-gray-400 hover:text-purple-400"
+                  >
+                    <Github className="h-5 w-5" />
+                  </Button>
+                </a>
               </div>
             </div>
           </div>

@@ -27,7 +27,7 @@ const Dashboard = () => {
 
   const [user, setUser]=useState(null);
   const [loading,setLoading]=useState(true);
-  const userId=3;//temp
+  const userId=1;//temp
 
   useEffect(()=>{
     const fetchUserData=async() =>{
@@ -68,7 +68,7 @@ const Dashboard = () => {
 
             
           {/* ✅ TEMP: Show Quiz Result */}
-          <QuizResult userId={3} xpGained={50} />
+          <QuizResult userId={1} xpGained={50} />
           
             {!user.isPremium && <PremiumTeaser />}
           </div>
