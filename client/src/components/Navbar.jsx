@@ -4,11 +4,11 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import UserDropdown from "./UserDropdown"
 
-const Navbar = ({ navigateTo, onLogout, currentPage,userId}) => {
+const Navbar = ({ navigateTo, onLogout, currentPage,user}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const navigate =useNavigate()
-  console.log("Navbar received userId:", userId);
+  console.log("Navbar received userId:", user);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/60 border-b border-purple-900/50 shadow-lg">
@@ -61,17 +61,22 @@ const Navbar = ({ navigateTo, onLogout, currentPage,userId}) => {
               </div>
             </button>
 {isDropdownOpen && (
-  <UserDropdown
-  userId={userId} 
-  navigateTo={(page) => {
-    if (page === "profile") {
-      navigate(`/profile/${userId}`); 
-    } else {
-      navigateTo(page);
-    }
-  }}
+//   <UserDropdown
+//   userId={userId} 
+//   navigateTo={(page) => {
+//     if (page === "profile") {
+//       navigate(`/profile/${userId}`); 
+//     } else {
+//       navigateTo(page);
+//     }
+//   }}
+//   onLogout={onLogout}
+// />
+<UserDropdown
+  user={user}
   onLogout={onLogout}
-/>)}
+/>
+)}
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ const NewsAdmin = () => {
       const res = await fetch("http://localhost:3000/api/news", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials:"include",
         body: JSON.stringify(form),
       });
       if (res.ok) {
@@ -23,12 +24,14 @@ const NewsAdmin = () => {
         setMessage("Failed to post news");
       }
     } catch (err) {
-      setMessage("Server error");
+      setMessage("Server error",err);
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto p-4 text-white">
+    <div className="min-h-[80vh] flex items-center justify-center text-white">
+      <div className="w-full max-w-xl p-6 bg-black/40 rounded-lg border border-purple-700/50 shadow-lg">
+
       <h2 className="text-2xl font-bold mb-4">Post New Club News</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -53,6 +56,7 @@ const NewsAdmin = () => {
         </button>
       </form>
       {message && <p className="mt-4">{message}</p>}
+    </div>
     </div>
   );
 };

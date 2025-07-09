@@ -16,18 +16,12 @@ import { fetchUserById } from '../api/userApi.js';
 import { fetchUserXP } from "../api/userApi.js"
 
 const Dashboard = () => {
-  // Dummy user data
-  // const user = { 
-  //   name: "John Smith",
-  //   level: 12,
-  //   xp: 3450,
-  //   totalXp: 4000,
-  //   isPremium: false,
-  // }
+
 
   const [user, setUser]=useState(null);
   const [loading,setLoading]=useState(true);
-  const userId=3;//temp
+  // const userId=1;//
+  const userId=localStorage.getItem("userId");
 
   useEffect(()=>{
     const fetchUserData=async() =>{

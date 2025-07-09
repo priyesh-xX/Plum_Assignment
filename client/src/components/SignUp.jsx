@@ -46,6 +46,7 @@ function SignUp({ setUser, setIsAuthenticated }) {
       const user = response.data.user;
       setUser(user);
       setIsAuthenticated(true);
+      localStorage.setItem("userId", user.id); 
       navigate("/dashboard");
     } catch (err) {
       console.error("Signup failed:", err.response?.data || err.message);
