@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-// If you want to use icons (optional, but included here)
-import { FaRegClock } from 'react-icons/fa'; // Install using: npm install react-icons
+// If you want to use icons (optional, but included here
+import { FaRegClock } from 'react-icons/fa'; 
+import stringSimilarity from 'string-similarity';
 
 function ChallengeQuizPage() {
   const navigate = useNavigate();
@@ -40,39 +41,13 @@ function ChallengeQuizPage() {
     updated[index] = value;
     setUserAnswers(updated);
   };
-const STOP_WORDS = new Set([
-  "a",
-  "an",
-  "the",
-  "is",
-  "am",
-  "are",
-  "was",
-  "were",
-  "of",
-  "to",
-  "in",
-  "on",
-  "for",
-  "and",
-  "or",
-  "with",
-  "at",
-  "by",
-  "from",
-  "as",
-  "that",
-  "this",
-  "such",
-  "it",
-  "their",
-  "they",
-  "he",
-  "she",
-  "we",
-  "you",
-  "my",
-
+  const STOP_WORDS = new Set([
+  "a", "an", "the", "is", "am", "are", "was", "were", "of", "to", "in", "on",
+  "for", "and", "or", "with", "at", "by", "from", "as", "that", "this", "such",
+  "it", "their", "they", "he", "she", "we", "you", "my", "your", "his", "her",
+  "its", "our", "his", "hers", "theirs", "there", "where", "when", "who", "whom",
+  "which", "what", "how", "why", "if", "but", "so", "then", "than", "just", "only", "more", "most", "some", "any", "all",
+  "no", "not", "now", "up", "down", "here",
 ]);
 
 const getKeywords = (text) => {
@@ -83,18 +58,19 @@ const getKeywords = (text) => {
     .filter((word) => word && !STOP_WORDS.has(word));
 };
 
- const handleSubmit = () => {
+const handleSubmit = () => {
   let correct = 0;
   const results = [];
 
   questions.forEach((q, i) => {
     const userText = userAnswers[i] || "";
+    const correctText = q.answer || "";
 
-    const correctKeywordArr = getKeywords(q.answer || "");
+    const correctKeywordArr = getKeywords(correctText);
     const correctKeywords = new Set(correctKeywordArr);
-
     const userKeywords = new Set(getKeywords(userText));
 
+    // Keyword match count
     let matchCount = 0;
     for (let word of userKeywords) {
       if (correctKeywords.has(word)) {
@@ -102,18 +78,31 @@ const getKeywords = (text) => {
       }
     }
 
-    // If only 1 correct keyword → 1 match is enough or we need at least 2 matches
-    const isCorrect =
-      (correctKeywordArr.length === 1 && matchCount >= 1) || matchCount >= 2;
+    // Keyword-based rule
+    const keywordRule =
+      (correctKeywordArr.length === 1 && matchCount >= 1) ||
+      (correctKeywordArr.length > 1 && matchCount >= 2);
+
+    // String similarity rule
+    const similarityScore = stringSimilarity.compareTwoStrings(
+      userText.toLowerCase(),
+      correctText.toLowerCase()
+    );
+
+    const similarityRule = similarityScore >= 0.60;
+
+    // Final decision: either keyword OR similarity
+    const isCorrect = keywordRule || similarityRule;
 
     if (isCorrect) correct++;
 
     results.push({
       question: q.question,
       userAnswer: userText,
-      correctAnswer: q.answer,
+      correctAnswer: correctText,
       isCorrect,
       matchedKeywords: matchCount,
+      similarityScore: similarityScore.toFixed(2),
     });
   });
 
@@ -158,9 +147,7 @@ const getKeywords = (text) => {
 
       {submitted ? (
         <div className="bg-gray-900 p-6 rounded-lg border border-purple-700 shadow-xl text-left">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            ✅ Quiz Completed!
-          </h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">✅ Quiz Completed!</h2>
           <p className="text-green-400 text-lg mb-1 text-center">
             Correct Answers: {correctCount} / {questions.length}
           </p>
@@ -180,12 +167,10 @@ const getKeywords = (text) => {
                   Q{i + 1}: {res.question}
                 </p>
                 <p className="text-sm text-gray-300 mb-1">
-                  <span className="font-medium">Your Answer:</span>{" "}
-                  {res.userAnswer}
+                  <span className="font-medium">Your Answer:</span> {res.userAnswer}
                 </p>
                 <p className="text-sm text-gray-300 mb-1">
-                  <span className="font-medium">Correct Answer:</span>{" "}
-                  {res.correctAnswer}
+                  <span className="font-medium">Correct Answer:</span> {res.correctAnswer}
                 </p>
                 <p
                   className={`text-sm font-bold ${
@@ -193,8 +178,8 @@ const getKeywords = (text) => {
                   }`}
                 >
                   {res.isCorrect ? "✅ Correct" : "❌ Incorrect"} (
-                  {res.matchedKeywords} keyword match
-                  {res.matchedKeywords !== 1 ? "es" : ""})
+                  {res.matchedKeywords} keyword match{res.matchedKeywords !== 1 ? "es" : ""},
+                  similarity: {res.similarityScore})
                 </p>
               </div>
             ))}

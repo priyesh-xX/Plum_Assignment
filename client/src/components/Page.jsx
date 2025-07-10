@@ -9,6 +9,7 @@ import {
   Award,
   Star,
   Target,
+  Eye,
 } from "lucide-react";
 import { User } from "lucide-react";
 
@@ -167,6 +168,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="bg-gray-800/50 border-purple-800/30">
               <CardContent className="p-6 text-center">
+                 <Eye className="h-12 w-12 text-purple-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-3">
                   Intellectual Growth
                 </h3>
