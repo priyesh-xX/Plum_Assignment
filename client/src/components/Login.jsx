@@ -23,6 +23,12 @@ const Login = ({ setUser, setIsAuthenticated }) => {
         }
       );
       const user = response.data.user;
+
+      localStorage.setItem("userId",user.id);
+      localStorage.setItem("usernam",user.username);
+
+      localStorage.setItem("token", response.data.token);//optional
+
       setUser(user);
       setIsAuthenticated(true);
       navigate("/dashboard");

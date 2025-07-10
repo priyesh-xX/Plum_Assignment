@@ -22,15 +22,16 @@ function AuthenticatedLayout({ children, user, onLogout, currentPage, navigateTo
   return (
     <>
       <Navbar
+        user={user}
+        onLogout={onLogout} 
         navigateTo={navigateTo}
-        onLogout={onLogout}
         currentPage={currentPage}
-        userId={user?.id}
       />
       {children}
     </>
   );
 }
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

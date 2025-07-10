@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { fetchUserById, updateUserProfile } from '../api/userApi';
 
+import { motion, AnimatePresence } from "framer-motion";
+
 const UserProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -57,92 +59,123 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-black/50 border border-purple-700/50 rounded-xl">
-      <h2 className="text-3xl font-bold text-white mb-6">User Profile</h2>
+    <div className="min-h-[85vh] flex items-center justify-center text-white">
+  <div className="w-full max-w-2xl p-8 bg-black/40 rounded-xl border border-purple-700/50 shadow-xl">
+    <h2 className="text-3xl font-bold text-purple-400 mb-8 text-center">
+      User Profile
+    </h2>
 
-      <div className="grid gap-4 text-white">
-        <div>
-          <label className="block font-semibold text-purple-400">Username:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-              className="mt-1 w-full p-2 bg-gray-800 text-white rounded border border-purple-600"
-            />
-          ) : (
-            <p>{user.username}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block font-semibold text-purple-400">Email:</label>
-          {isEditing ? (
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="mt-1 w-full p-2 bg-gray-800 text-white rounded border border-purple-600"
-            />
-          ) : (
-            <p>{user.email}</p>
-          )}
-        </div>
-        
-        {/* <div>
-          <label className="block font-semibold text-purple-400">Password:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              className="mt-1 w-full p-2 bg-gray-800 text-white rounded border border-purple-600"
-            />
-          ) : (
-            <p>{user.password}</p>
-          )}
-        </div> */}
-
-        <div>
-          <span className="font-semibold text-purple-400">XP: </span>
-          {user.xp}
-        </div>
-        <div>
-          <span className="font-semibold text-purple-400">Level: </span>
-          {user.level}
-        </div>
+    <div className="grid gap-6">
+      <div>
+        <label className="block text-sm text-purple-400 font-semibold mb-1">
+          Username
+        </label>
+        <AnimatePresence mode="wait">
+  {isEditing ? (
+    <motion.input
+      key="edit-username"
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 5 }}
+      transition={{ duration: 0.2 }}
+      type="text"
+      name="username"
+      value={form.username}
+      onChange={handleChange}
+      className="w-full p-3 bg-gray-900 text-white rounded border border-purple-600"
+    />
+  ) : (
+    <motion.p
+      key="view-username"
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 5 }}
+      transition={{ duration: 0.2 }}
+      className="text-lg"
+    >
+      {user.username}
+    </motion.p>
+  )}
+</AnimatePresence>
       </div>
 
-      <div className="mt-6 flex justify-end gap-4">
-        {isEditing ? (
-          <>
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg"
-            >
-              {saving ? "Saving..." : "Save"}
-            </button>
-            <button
-              onClick={handleCancel}
-              className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg"
-          >
-            Edit Profile
-          </button>
-        )}
+      <div>
+        <label className="block text-sm text-purple-400 font-semibold mb-1">
+          Email
+        </label>
+        <AnimatePresence mode="wait">
+  {isEditing ? (
+    <motion.input
+      key="edit-email"
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 5 }}
+      transition={{ duration: 0.2 }}
+      type="text"
+      name="email"
+      value={form.email}
+      onChange={handleChange}
+      className="w-full p-3 bg-gray-900 text-white rounded border border-purple-600"
+    />
+  ) : (
+    <motion.p
+      key="view-email"
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 5 }}
+      transition={{ duration: 0.2 }}
+      className="text-lg"
+    >
+      {user.email}
+    </motion.p>
+  )}
+</AnimatePresence>
+      </div>
+
+      <div>
+        <span className="text-sm text-purple-400 font-semibold">
+          XP:
+        </span>
+        <p className="text-lg">{user.xp}</p>
+      </div>
+
+      <div>
+        <span className="text-sm text-purple-400 font-semibold">
+          Level:
+        </span>
+        <p className="text-lg">{user.level}</p>
       </div>
     </div>
+
+    <div className="mt-8 flex justify-end gap-4">
+      {isEditing ? (
+        <>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium"
+          >
+            {saving ? "Saving..." : "Save"}
+          </button>
+          <button
+            onClick={handleCancel}
+            className="px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium"
+          >
+            Cancel
+          </button>
+        </>
+      ) : (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium"
+        >
+          Edit Profile
+        </button>
+      )}
+    </div>
+  </div>
+</div>
+
   );
 };
 
