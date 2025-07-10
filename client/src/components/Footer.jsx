@@ -1,4 +1,17 @@
+import { useNavigate, useLocation } from "react-router-dom";
+
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavigation = (path) => {
+    if (location.pathname === "/dashboard" && path.includes("#")) {
+      window.location.hash = path.split("#")[1];
+    } else {
+      navigate(path);
+    }
+  };
+
     return (
       <footer className="backdrop-blur-md bg-black/80 border-t border-purple-900/50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -9,16 +22,26 @@ const Footer = () => {
                   Gnosis
                 </span>
               </div>
-              <p className="mt-2 text-sm text-gray-400">Elevate your quiz game to the next level.</p>
+              <p className="mt-2 text-sm text-gray-400">For those who Gno.</p>
             </div>
   
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
               <div>
                 <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Resources</h3>
                 <div className="mt-4 space-y-2">
-                  <button className="text-sm text-gray-400 hover:text-white block">About Us</button>
-                  <button className="text-sm text-gray-400 hover:text-white block">Contact</button>
-                  <button className="text-sm text-gray-400 hover:text-white block">FAQ</button>
+                  <button
+                  onClick={() => handleNavigation("/dashboard#about")}
+                  className="text-sm text-gray-400 hover:text-white block"
+                >
+                  About Us
+                </button>
+                <button
+                  onClick={() => handleNavigation("/dashboard#contact")}
+                  className="text-sm text-gray-400 hover:text-white block"
+                >
+                  Contact
+                </button>
+                <button className="text-sm text-gray-400 hover:text-white block">FAQ</button>
                 </div>
               </div>
   
@@ -47,7 +70,7 @@ const Footer = () => {
                 </svg>
               </a>
   
-              <a href="#" className="text-gray-400 hover:text-white">
+              <a href="https://www.instagram.com/gnosis_mnnit/" className="text-gray-400 hover:text-white">
                 <span className="sr-only">Instagram</span>
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path
