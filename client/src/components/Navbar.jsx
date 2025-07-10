@@ -16,9 +16,16 @@ const Navbar = ({ navigateTo, onLogout, currentPage,userId}) => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <button onClick={() => navigateTo("dashboard")} className="flex items-center">
-              <img src="/logo.png" alt="Logo" className="w-10 h-10 object-cover  scale-100 translate-y-1"/>
-          <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+            <button
+              onClick={() => navigateTo("dashboard")}
+              className="flex items-center"
+            >
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="w-10 h-10 object-cover  scale-100 translate-y-1"
+              />
+              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
                 Gnosis
               </span>
             </button>
@@ -30,7 +37,9 @@ const Navbar = ({ navigateTo, onLogout, currentPage,userId}) => {
               <button
                 onClick={() => navigateTo("dashboard")}
                 className={`${
-                  currentPage === "dashboard" ? "text-white" : "text-gray-300 hover:text-white"
+                  currentPage === "dashboard"
+                    ? "text-white"
+                    : "text-gray-300 hover:text-white"
                 } px-3 py-2 rounded-md text-sm font-medium transition-colors`}
               >
                 Home
@@ -60,23 +69,24 @@ const Navbar = ({ navigateTo, onLogout, currentPage,userId}) => {
                 JS
               </div>
             </button>
-{isDropdownOpen && (
-  <UserDropdown
-  userId={userId} 
-  navigateTo={(page) => {
-    if (page === "profile") {
-      navigate(`/profile/${userId}`); 
-    } else {
-      navigateTo(page);
-    }
-  }}
-  onLogout={onLogout}
-/>)}
+            {isDropdownOpen && (
+              <UserDropdown
+                userId={userId}
+                navigateTo={(page) => {
+                  if (page === "profile") {
+                    navigate(`/profile/${userId}`);
+                  } else {
+                    navigateTo(page);
+                  }
+                }}
+                onLogout={onLogout}
+              />
+            )}
           </div>
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
 export default Navbar

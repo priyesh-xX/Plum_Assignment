@@ -12,17 +12,15 @@ const Login = ({ setUser, setIsAuthenticated }) => {
     e.preventDefault();
 
     try {
+      // 🔐 Send credentials to backend, receive cookies
       const response = await axios.post(
         "http://localhost:3000/api/users/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true, // ✅ allow cookies to be sent/received
-        }
+        { email, password },
+        { withCredentials: true } // ✅ include cookies
       );
+
       const user = response.data.user;
+
       setUser(user);
       setIsAuthenticated(true);
       navigate("/dashboard");
