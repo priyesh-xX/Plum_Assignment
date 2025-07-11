@@ -16,6 +16,8 @@ import SuccessPage from "./components/SuccessPage";
 import CancelPage from "./components/CancelPage";
 import Page from "./components/Page";
 
+
+
 import "./index.css";
 
 function AuthenticatedLayout({ children, user, onLogout, currentPage, navigateTo }) {
@@ -168,18 +170,18 @@ function App() {
                   }
                 />
                 <Route
-                  path="/challenge"
-                  element={
-                    <AuthenticatedLayout
-                      user={user}
-                      onLogout={handleLogout}
-                      currentPage={currentPage}
-                      navigateTo={navigateTo}
-                    >
-                      <ChallengeQuizPage />
-                    </AuthenticatedLayout>
-                  }
-                />
+                path="/challenge"
+                element={
+                  <AuthenticatedLayout
+                    user={user}
+                    onLogout={handleLogout}
+                    currentPage={currentPage}
+                    navigateTo={navigateTo}
+                  >
+                    <ChallengeQuizPage user={user}/>
+                  </AuthenticatedLayout>
+                }
+              />
                 <Route
                   path="/upgrade"
                   element={

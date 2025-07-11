@@ -61,23 +61,35 @@ export const fetchUserXP= async(id)=>{
     return await response.json();
 }
 
-export async function updateUserXP(userId, xpGained){
-    try{
-        const response = await fetch(`${XP_URL}/${userId}`,{
-            method: 'PUT',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({xpGained}),
-        });
-        if(!response.ok){
-            throw new Error('Failed to update XP');
-        }
-        return await response.json();//read and parse into js obj
-    }catch(error){
-        console.error('Error updating XP:', error);
-    }
-};
+// export async function updateUserXP(userId, xpGained){
+//     try{
+//         const response = await fetch(`${XP_URL}/${userId}`,{
+//             method: 'PUT',
+//             headers:{
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({xpGained}),
+//         });
+//         if(!response.ok){
+//             throw new Error('Failed to update XP');
+//         }
+//         return await response.json();//read and parse into js obj
+//     }catch(error){
+//         console.error('Error updating XP:', error);
+//     }
+// };
+
+
+export async function updateUserXP(userId, xpGained) {
+  const res = await fetch(`${XP_URL}/${userId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ xpGained }),
+  });
+
+  if (!res.ok) throw new Error("Failed to update XP");
+  return await res.json();          //  { xp, level, user_id }
+}
 
 //LEADERBOARD
 export const fetchLeaderboard = async ()=>{

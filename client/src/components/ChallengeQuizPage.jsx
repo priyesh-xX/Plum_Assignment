@@ -4,7 +4,12 @@ import { useEffect, useState } from 'react';
 import { FaRegClock } from 'react-icons/fa'; 
 import stringSimilarity from 'string-similarity';
 
-function ChallengeQuizPage() {
+import { updateUserXP } from '../api/userApi';
+
+import QuizResult from "./QuizResult";
+
+
+function ChallengeQuizPage({user}) {
   const navigate = useNavigate();
   const location = useLocation();
   const questions = location.state?.questions || [];
@@ -58,7 +63,7 @@ const getKeywords = (text) => {
     .filter((word) => word && !STOP_WORDS.has(word));
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   let correct = 0;
   const results = [];
 
@@ -106,12 +111,21 @@ const handleSubmit = () => {
     });
   });
 
+  const earnedXp = correct * 10;
   setEvaluationResults(results);
   setCorrectCount(correct);
-  setXp(correct * 10);
+  setXp(earnedXp);
   setSubmitted(true);
-};
 
+  // Update XP in backend (only once after submission)
+  try {
+    const xpResult = await updateUserXP(user.id, earnedXp);
+    console.log("✅ XP updated successfully:", xpResult);
+  } catch (err) {
+    console.error("❌ Failed to update XP:", err);
+  }
+  console.log("About to update XP for user:", user?.id);
+};
 
 
   const formatTime = (seconds) => {
@@ -184,7 +198,8 @@ const handleSubmit = () => {
               </div>
             ))}
           </div>
-
+          
+          <QuizResult userId={user.id} xpGained={xp} />
           <div className="text-center">
             <button
               className="mt-6 px-6 py-2 bg-purple-700 hover:bg-purple-800 rounded"

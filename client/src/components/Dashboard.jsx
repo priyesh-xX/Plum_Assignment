@@ -63,9 +63,11 @@ const Dashboard = () => {
             <EventsSection />
             <QuizButtons />
 
-            {/* ✅ TEMP: Show Quiz Result */}
-            <QuizResult userId={user.id} xpGained={50} />
-
+            
+          {/* ✅ TEMP: Show Quiz Result
+          <QuizResult userId={3} xpGained={50} />
+           */}
+           
             {!user.isPremium && <PremiumTeaser />}
           </div>
 
