@@ -1,4 +1,41 @@
+import { useState } from "react";
+
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("Sending...");
+
+    try {
+      const response = await fetch("/api/contact/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus("Message sent successfully!");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setStatus("Failed to send message. Please try again later.");
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to send message. Please try again later.");
+    }
+  };
     return (
       <div className="backdrop-blur-md bg-black/50 rounded-xl p-6 border border-purple-900/50 shadow-lg">
         <h1 className="text-3xl font-bold text-white mb-6">Contact Us</h1>
@@ -28,7 +65,7 @@ const Contact = () => {
                 </svg>
                 <div>
                   <h3 className="text-lg font-medium text-white">Email</h3>
-                  <p className="text-gray-300">support@gnosisquizmaster.com</p>
+                  <p className="text-gray-300">gnosisclub11@gmail.com</p>
                 </div>
               </div>
   
@@ -55,7 +92,7 @@ const Contact = () => {
                 </svg>
                 <div>
                   <h3 className="text-lg font-medium text-white">Location</h3>
-                  <p className="text-gray-300">123 Quiz Street, Knowledge City</p>
+                  <p className="text-gray-300">Motilal Nehru National Institute of Technology Allahabad</p>
                 </div>
               </div>
   
@@ -83,7 +120,7 @@ const Contact = () => {
           </div>
   
           <div>
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
                   Name
@@ -91,6 +128,9 @@ const Contact = () => {
                 <input
                   type="text"
                   id="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-700 bg-gray-900/70 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                   placeholder="Your name"
                 />
@@ -103,6 +143,9 @@ const Contact = () => {
                 <input
                   type="email"
                   id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-700 bg-gray-900/70 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                   placeholder="your.email@example.com"
                 />
@@ -115,6 +158,9 @@ const Contact = () => {
                 <input
                   type="text"
                   id="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-700 bg-gray-900/70 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                   placeholder="How can we help?"
                 />
@@ -126,6 +172,9 @@ const Contact = () => {
                 </label>
                 <textarea
                   id="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                   rows="4"
                   className="w-full px-3 py-2 border border-gray-700 bg-gray-900/70 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                   placeholder="Your message..."
@@ -139,6 +188,7 @@ const Contact = () => {
                 Send Message
               </button>
             </form>
+            {status && <p className="text-sm text-gray-300 mt-2">{status}</p>}
           </div>
         </div>
       </div>
