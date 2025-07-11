@@ -35,6 +35,7 @@ function AuthenticatedLayout({ children, user, onLogout, currentPage, navigateTo
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState("dashboard");
 
@@ -51,30 +52,31 @@ function App() {
     setUser(null);
   };
 
-  //for login status once when the app loads
+  // ✅ Check login status on initial app load
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/users/me", {
           withCredentials: true,
         });
-
         setUser(res.data.user);
         setIsAuthenticated(true);
         setCurrentPage("dashboard");
       } catch (err) {
         setUser(null);
         setIsAuthenticated(false);
+      } finally {
+        setAuthChecked(true); // ✅ finished checking
       }
     };
 
     checkLoginStatus();
   }, []);
 
-  //TimeMe.js  
+  // ✅ TimeMe.js setup for tracking
   useEffect(() => {
     TimeMe.initialize({
-      currentPageName: "overall", 
+      currentPageName: "overall",
       idleTimeoutInSeconds: 30,
     });
 
@@ -98,122 +100,124 @@ function App() {
   return (
     <Router>
       <Toaster position="top-center" reverseOrder={false} />
-
       <div className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-950 to-gray-950">
-        <Routes>
-          <Route path="/" element={<Page />} />
+        {authChecked ? (
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Page />} />
+            <Route
+              path="/signup"
+              element={
+                <SignUp
+                  setUser={(userData) => {
+                    setUser(userData);
+                    setIsAuthenticated(true);
+                    setCurrentPage("dashboard");
+                  }}
+                  setIsAuthenticated={setIsAuthenticated}
+                />
+              }
+            />
+            <Route
+              path="/login"
+              element={<Login setUser={setUser} setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/cancel" element={<CancelPage />} />
 
-          {/* Public Routes */}
-          <Route
-            path="/signup"
-            element={
-              <SignUp
-                setUser={(userData) => {
-                  setUser(userData);
-                  setIsAuthenticated(true);
-                  setCurrentPage("dashboard");
-                }}
-                setIsAuthenticated={setIsAuthenticated}
-              />
-            }
-          />
-          <Route
-            path="/login"
-            element={<Login setUser={setUser} setIsAuthenticated={setIsAuthenticated} />}
-          />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/cancel" element={<CancelPage />} />
+            {/* Protected Routes */}
+            {isAuthenticated && (
+              <>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <AuthenticatedLayout
+                      user={user}
+                      onLogout={handleLogout}
+                      currentPage={currentPage}
+                      navigateTo={navigateTo}
+                    >
+                      <Dashboard />
+                    </AuthenticatedLayout>
+                  }
+                />
+                <Route
+                  path="/profile/:id"
+                  element={
+                    <AuthenticatedLayout
+                      user={user}
+                      onLogout={handleLogout}
+                      currentPage={currentPage}
+                      navigateTo={navigateTo}
+                    >
+                      <UserProfile editable={false} />
+                    </AuthenticatedLayout>
+                  }
+                />
+                <Route
+                  path="/profile/:id/edit"
+                  element={
+                    <AuthenticatedLayout
+                      user={user}
+                      onLogout={handleLogout}
+                      currentPage={currentPage}
+                      navigateTo={navigateTo}
+                    >
+                      <UserProfile editable={true} />
+                    </AuthenticatedLayout>
+                  }
+                />
+                <Route
+                  path="/challenge"
+                  element={
+                    <AuthenticatedLayout
+                      user={user}
+                      onLogout={handleLogout}
+                      currentPage={currentPage}
+                      navigateTo={navigateTo}
+                    >
+                      <ChallengeQuizPage />
+                    </AuthenticatedLayout>
+                  }
+                />
+                <Route
+                  path="/upgrade"
+                  element={
+                    <AuthenticatedLayout
+                      user={user}
+                      onLogout={handleLogout}
+                      currentPage={currentPage}
+                      navigateTo={navigateTo}
+                    >
+                      <Subscriptions />
+                    </AuthenticatedLayout>
+                  }
+                />
+                <Route
+                  path="/admin/news"
+                  element={
+                    <AuthenticatedLayout
+                      user={user}
+                      onLogout={handleLogout}
+                      currentPage={currentPage}
+                      navigateTo={navigateTo}
+                    >
+                      <NewsAdmin />
+                    </AuthenticatedLayout>
+                  }
+                />
+              </>
+            )}
 
-          {/* Authenticated Routes */}
-          {isAuthenticated && (
-            <>
-              <Route
-                path="/dashboard"
-                element={
-                  <AuthenticatedLayout
-                    user={user}
-                    onLogout={handleLogout}
-                    currentPage={currentPage}
-                    navigateTo={navigateTo}
-                  >
-                    <Dashboard />
-                  </AuthenticatedLayout>
-                }
-              />
-              <Route
-                path="/profile/:id"
-                element={
-                  <AuthenticatedLayout
-                    user={user}
-                    onLogout={handleLogout}
-                    currentPage={currentPage}
-                    navigateTo={navigateTo}
-                  >
-                    <UserProfile editable={false} />
-                  </AuthenticatedLayout>
-                }
-              />
-              <Route
-                path="/profile/:id/edit"
-                element={
-                  <AuthenticatedLayout
-                    user={user}
-                    onLogout={handleLogout}
-                    currentPage={currentPage}
-                    navigateTo={navigateTo}
-                  >
-                    <UserProfile editable={true} />
-                  </AuthenticatedLayout>
-                }
-              />
-              <Route
-                path="/challenge"
-                element={
-                  <AuthenticatedLayout
-                    user={user}
-                    onLogout={handleLogout}
-                    currentPage={currentPage}
-                    navigateTo={navigateTo}
-                  >
-                    <ChallengeQuizPage />
-                  </AuthenticatedLayout>
-                }
-              />
-              <Route
-                path="/upgrade"
-                element={
-                  <AuthenticatedLayout
-                    user={user}
-                    onLogout={handleLogout}
-                    currentPage={currentPage}
-                    navigateTo={navigateTo}
-                  >
-                    <Subscriptions />
-                  </AuthenticatedLayout>
-                }
-              />
-              <Route
-                path="/admin/news"
-                element={
-                  <AuthenticatedLayout
-                    user={user}
-                    onLogout={handleLogout}
-                    currentPage={currentPage}
-                    navigateTo={navigateTo}
-                  >
-                    <NewsAdmin />
-                  </AuthenticatedLayout>
-                }
-              />
-            </>
-          )}
-
-          {/* Catch-all redirect */}
-          <Route
-            path="*"
-            element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />}
-          />
-        </Routes>
+            {/* Fallback */}
+            <Route
+              path="*"
+              element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />}
+            />
+          </Routes>
+        ) : (
+          <div className="text-white text-center pt-40">Loading...</div>
+        )}
       </div>
     </Router>
   );
