@@ -2,6 +2,7 @@ import {
   Users,
   Trophy,
   Quote,
+  Crown,
   ArrowRight,
   Github,
   Twitter,
@@ -13,7 +14,11 @@ import {
   Eye,
 } from "lucide-react";
 import { User } from "lucide-react";
-
+import LocomotiveScroll from "locomotive-scroll";
+import "locomotive-scroll/dist/locomotive-scroll.css";
+import React, { useRef } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/Card";
@@ -21,6 +26,25 @@ import { Link as ScrollLink, animateScroll as scroll } from "react-scroll";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function LandingPage() {
+ const scrollRef = useRef(null);
+
+useEffect(() => {
+  const scroll = new LocomotiveScroll({
+    el: scrollRef.current,
+    smooth: true,
+    multiplier: 1.0,
+    smartphone: {
+      smooth: true,
+    },
+    tablet: {
+      smooth: true,
+    },
+  });
+
+  return () => {
+    if (scroll) scroll.destroy();
+  };
+}, []);
   const testimonials = [
     {
       name: "Naman Verma",
@@ -62,7 +86,7 @@ export default function LandingPage() {
   // ];
 
   return (
-    <div className="min-h-screen overflow-hidden bg-gradient-to-l from-purple-900  to-gray-900">
+    <div ref={scrollRef} data-scroll-container  className="min-h-screen overflow-hidden bg-gradient-to-l from-purple-900  to-gray-900">
       {/* Navigation */}
       <div className="relative mt-16">
         <nav className=" fixed top-0 left-0 w-full z-50  border-b border-purple-700/40 bg-gradient-to-l from-purple-900/30 via-red-950/20 to-gray-900/50 backdrop-blur-sm">
@@ -157,10 +181,133 @@ export default function LandingPage() {
         </div>
       </section>
 
+
+      <section className="py-16 px-4  bg-gradient-to-l from-purple-900 via-red-950 to-gray-900">
+  <div className="container mx-auto">
+    <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+      Why Quizzing Transforms You
+    </h2>
+
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-gradient-to-r from-purple-900/20 to-red-900/20 border border-purple-700/30 rounded-lg mb-8">
+        <div className="p-8">
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Eye className="h-10 w-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-4">The Power of Questioning</h3>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Quizzing isn't just about knowing facts—it's about developing a mindset that questions, explores,
+              and connects ideas across disciplines.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Left Column */}
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mt-1">
+                  <span className="text-white text-sm font-bold">1</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Critical Thinking</h4>
+                  <p className="text-gray-400 text-sm">
+                    Quizzing sharpens your ability to analyze information quickly, make connections, and think
+                    under pressure.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mt-1">
+                  <span className="text-white text-sm font-bold">2</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Memory Enhancement</h4>
+                  <p className="text-gray-400 text-sm">
+                    Regular quizzing strengthens neural pathways, improving both short-term recall and long-term
+                    retention.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mt-1">
+                  <span className="text-white text-sm font-bold">3</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Confidence Building</h4>
+                  <p className="text-gray-400 text-sm">
+                    Success in quizzing builds intellectual confidence that translates to academic and
+                    professional achievements.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mt-1">
+                  <span className="text-white text-sm font-bold">4</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Interdisciplinary Learning</h4>
+                  <p className="text-gray-400 text-sm">
+                    Quizzes expose you to diverse fields, creating a well-rounded knowledge base that enhances
+                    creativity.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mt-1">
+                  <span className="text-white text-sm font-bold">5</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Social Intelligence</h4>
+                  <p className="text-gray-400 text-sm">
+                    Team quizzing develops communication skills, leadership abilities, and collaborative
+                    problem-solving.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mt-1">
+                  <span className="text-white text-sm font-bold">6</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Lifelong Learning</h4>
+                  <p className="text-gray-400 text-sm">
+                    Quizzing instills a love for learning that continues beyond academics into personal and
+                    professional growth.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 p-6 bg-gradient-to-r from-purple-800/30 to-red-800/30 rounded-lg border border-purple-600/30">
+            <blockquote className="text-center">
+              <p className="text-gray-200 text-lg italic mb-4">
+                "In quizzing, every question is a doorway to discovery, every answer a step toward wisdom, and
+                every competition a chance to grow."
+              </p>
+              <cite className="text-purple-400 font-semibold">— The Gnosis Philosophy</cite>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
       {/* Features Section */}
       <section
         id="about"
-        className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-20"
+        className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-20  bg-gradient-to-l from-purple-900 via-red-950 to-gray-900"
       >
         <div className="container mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
@@ -208,7 +355,8 @@ export default function LandingPage() {
       </section>
 
       {/* Achievements Section */}
-      <section className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-20">
+      <section className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-20 bg-gradient-to-l from-purple-900 via-red-950 to-gray-900
+">
         <div className="container mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
             Our Achievements
@@ -276,7 +424,82 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> 
+      <section className= "py-16 px-4 bg-gradient-to-l from-purple-900 via-red-950 to-gray-900">
+      <div className="container mx-auto">
+     <div className="flex justify-center mb-6">
+      <Crown className="h-16 w-16 text-yellow-400" />
+    </div>
+    <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">Gnosis Hall of Fame</h2>
+    <p className="text-center text-gray-300 text-lg mb-12 max-w-3xl mx-auto">
+      Celebrating the legendary teams that have brought glory to Gnosis and made their mark in the quizzing world
+    </p>
+
+    {/* First Row (3 Cards) */}
+    <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-8">
+      <Card className="bg-gradient-to-br from-purple-900/30 to-red-900/20 border-purple-700/40">
+        <CardContent className="p-6 text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Trophy className="h-8 w-8 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Death Spiral</h3>
+          <p className="text-gray-300 text-sm">
+            Masters of rapid-fire rounds and known for their lightning-fast buzzer skills
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-gradient-to-br from-purple-900/30 to-red-900/20 border-purple-700/40">
+        <CardContent className="p-6 text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Star className="h-8 w-8 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Alpha Q</h3>
+          <p className="text-gray-300 text-sm">The strategic masterminds who revolutionized team quiz dynamics</p>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-gradient-to-br from-purple-900/30 to-red-900/20 border-purple-700/40">
+        <CardContent className="p-6 text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Award className="h-8 w-8 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Pionel Pepsi</h3>
+          <p className="text-gray-300 text-sm">
+            Pioneers in creative thinking and unconventional problem-solving approaches
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+
+    {/* Second Row (2 Cards, Centered) */}
+    <div className="flex flex-wrap justify-center gap-8">
+      <Card className="bg-gradient-to-br from-purple-900/30 to-red-900/20 border-purple-700/40 w-full sm:w-[300px]">
+        <CardContent className="p-6 text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Award className="h-8 w-8 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">AVN</h3>
+          <p className="text-gray-300 text-sm">
+            A fearless trio with a knack for cracking the toughest trivia under pressure
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-gradient-to-br from-purple-900/30 to-red-900/20 border-purple-700/40 w-full sm:w-[300px]">
+        <CardContent className="p-6 text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Star className="h-8 w-8 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Three Leaf Clover</h3>
+          <p className="text-gray-300 text-sm">
+            The luckiest team of all — blending charm, wit, and quick thinking
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>
 
       {/* Quotes Section
       <section className="py-16 px-4">
@@ -299,7 +522,7 @@ export default function LandingPage() {
       {/* Testimonials Section */}
      <section
   id="testimonials"
-  className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-20 bg-gray-800/30"
+  className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-20  bg-gradient-to-l from-purple-900 via-red-950 to-gray-900"
 >
   <div className="container mx-auto">
     <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
@@ -340,7 +563,7 @@ export default function LandingPage() {
 </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4  bg-gradient-to-l from-purple-900 via-red-950 to-gray-900">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Expand Your Mind?
@@ -363,7 +586,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer
         id="contact"
-        className="border-t border-purple-800/30 bg-gray-900/50 py-12 px-4"
+        className="border-t border-purple-800/30  py-12 px-4  bg-gradient-to-l from-purple-900 via-red-950 to-gray-900"
       >
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
