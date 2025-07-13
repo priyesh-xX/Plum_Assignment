@@ -24,14 +24,14 @@ const Dashboard = () => {
  useEffect(() => {
   const fetchUserData = async () => {
     try {
-      // ✅ Ask backend to decode token from HttpOnly cookie
+      //  Ask backend to decode token from HttpOnly cookie
       const res = await axios.get("http://localhost:3000/api/users/me", {
         withCredentials: true,
       });
 
       const user = res.data.user;
 
-      // ✅ Optional: Fetch XP details separately
+      //  Optional: Fetch XP details separately
       const xpData = await fetchUserXP(user.id);
 
       setUser({
@@ -60,11 +60,13 @@ const Dashboard = () => {
           <div className="lg:col-span-2 space-y-6">
             <WelcomeSection user={user} />
             <NewsCarousel />
-            <EventsSection />
+
+            <EventsSection user={user}/>
+
             <QuizButtons />
 
             
-          {/* ✅ TEMP: Show Quiz Result
+          {/*  TEMP: Show Quiz Result
           <QuizResult userId={3} xpGained={50} />
            */}
            
