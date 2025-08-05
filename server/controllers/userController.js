@@ -63,7 +63,7 @@ export const createUser = async (req, res) => {
     if (error.code === "23505") {
       return res.status(409).json({ error: "Username or email already exists" });
     }
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
