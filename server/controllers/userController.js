@@ -2,6 +2,8 @@ import { pool } from "../db/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+
+
 // ===================== GET ALL USERS =====================
 export const getAllUsers = async (req, res) => {
   try {
@@ -223,3 +225,5 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+

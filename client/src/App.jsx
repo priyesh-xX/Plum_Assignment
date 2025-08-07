@@ -16,7 +16,8 @@ import SuccessPage from "./components/SuccessPage";
 import CancelPage from "./components/CancelPage";
 import Page from "./components/Page";
 
-
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 import "./index.css";
 
@@ -124,6 +125,8 @@ function App() {
               path="/login"
               element={<Login setUser={setUser} setIsAuthenticated={setIsAuthenticated} />}
             />
+            <Route path="/forgot-password" element={<ForgotPassword />}/>
+            <Route path="/reset-password/:token" element={<ResetPassword />}/>
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/cancel" element={<CancelPage />} />
 

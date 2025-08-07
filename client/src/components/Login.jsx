@@ -88,9 +88,9 @@ const Login = ({ setUser, setIsAuthenticated }) => {
               </label>
             </div>
             <div className="text-sm">
-              <a href="#" className="font-medium text-purple-400 hover:text-purple-300">
+              <Link to="/forgot-password" className="font-medium text-purple-400 hover:text-purple-300">
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
 

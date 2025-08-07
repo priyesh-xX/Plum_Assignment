@@ -1,6 +1,8 @@
 import express from "express";
 import { loginUser} from "../controllers/userController.js";
-import { getAllUsers,getUserById,createUser,updateUser,deleteUser, getCurrentUser,logoutUser,refreshToken } from "../controllers/userController.js";
+import { getAllUsers,getUserById,createUser,updateUser,deleteUser, 
+    getCurrentUser,logoutUser,refreshToken } from "../controllers/userController.js";
+import { forgotPassword,resetPassword } from "../controllers/passwordController.js";
 
 import { validatePassword } from "../middleware/validatePassword.js";
 
@@ -19,9 +21,12 @@ router.get('/:id',getUserById);
 //CRUD
 
 router.put('/:id',updateUser);
-
 router.delete('/:id',deleteUser);
 router.post("/logout", logoutUser);
+
+//RESET Password
+router.post("/forgot-password",forgotPassword);
+router.post("/reset-password/:token",validatePassword,resetPassword);
 
 
 export default router;
