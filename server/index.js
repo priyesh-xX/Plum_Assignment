@@ -3,9 +3,9 @@ import cors from"cors";
 import dotenv from "dotenv";
 import {pool} from "./db/db.js"
 import cookieParser from "cookie-parser";
+import { Server } from "socket.io";
 
-
-//import quizRoutes from "./routes/quiz.js";
+//ROUTES
 // import quizRoutes from "./routes/quiz.js";
 import userRoutes from "./routes/user.js";
 import practiceQuizRoutes from "./routes/practiceQuiz.js";

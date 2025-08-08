@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @keyframes gradientMove {
   0% {
     background-position: 0% 50%;

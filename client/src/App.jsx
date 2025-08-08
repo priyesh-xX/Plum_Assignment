@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
 import TimeMe from "timeme.js";
+import { io } from "socket.io-client";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import Navbar from "./components/Navbar";
 import SignUp from "./components/SignUp";
@@ -15,11 +19,17 @@ import NewsAdmin from "./components/NewsAdmin";
 import SuccessPage from "./components/SuccessPage";
 import CancelPage from "./components/CancelPage";
 import Page from "./components/Page";
+import SettingsPage from "./components/SettingsPage";
 
+import FullLeaderboard from "./components/FullLeaderboard";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 
+
 import "./index.css";
+
+// toast.configure();
+// const socket = io("http://localhost:5000");
 
 function AuthenticatedLayout({ children, user, onLogout, currentPage, navigateTo }) {
   return (
@@ -55,7 +65,7 @@ function App() {
     setUser(null);
   };
 
-  // ✅ Check login status on initial app load
+  // Check login status on initial app load
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -69,14 +79,14 @@ function App() {
         setUser(null);
         setIsAuthenticated(false);
       } finally {
-        setAuthChecked(true); // ✅ finished checking
+        setAuthChecked(true); // finished checking
       }
     };
 
     checkLoginStatus();
   }, []);
 
-  // ✅ TimeMe.js setup for tracking
+  // TimeMe.js setup for tracking
   useEffect(() => {
     TimeMe.initialize({
       currentPageName: "overall",
@@ -121,6 +131,9 @@ function App() {
                 />
               }
             />
+
+            <Route path="/leaderboard" element={<FullLeaderboard />} />
+
             <Route
               path="/login"
               element={<Login setUser={setUser} setIsAuthenticated={setIsAuthenticated} />}
@@ -199,6 +212,19 @@ function App() {
                   }
                 />
                 <Route
+  path="/settings"
+  element={
+    <AuthenticatedLayout
+      user={user}
+      onLogout={handleLogout}
+      currentPage={currentPage}
+      navigateTo={navigateTo}
+    >
+      <SettingsPage user={user} />
+    </AuthenticatedLayout>
+  }
+/>
+                <Route
                   path="/admin/news"
                   element={
                     <AuthenticatedLayout
@@ -211,6 +237,9 @@ function App() {
                     </AuthenticatedLayout>
                   }
                 />
+                
+            
+
               </>
             )}
 

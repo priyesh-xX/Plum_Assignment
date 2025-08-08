@@ -58,24 +58,33 @@ const Dashboard = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <WelcomeSection user={user} />
-            <NewsCarousel />
+  <div className="animate-welcomeEntrance rounded-xl shadow-md bg-gradient-to-br from-purple-800 to-purple-950 p-6">
+  <WelcomeSection user={user} />
+</div>
 
-            <EventsSection user={user}/>
+  <div className="transition transform hover:scale-105 hover:-translate-y-1 duration-300">
+    <NewsCarousel />
+  </div>
 
-            <QuizButtons />
+  <div className="transition transform hover:scale-105 hover:-translate-y-1 duration-300">
+    <EventsSection user={user} />
+  </div>
+    
+  
+    <QuizButtons />
+  
 
-            
-          {/*  TEMP: Show Quiz Result
-          <QuizResult userId={3} xpGained={50} />
-           */}
-           
-            {!user.isPremium && <PremiumTeaser />}
-          </div>
-
+  {!user.isPremium && (
+    <div className="transition transform hover:scale-105 hover:-translate-y-1 duration-300">
+      <PremiumTeaser />
+    </div>
+  )}
+</div>
           <div className="space-y-6">
+            <div className="transition transform hover:scale-105 hover:-translate-y-1 duration-300">
             <ActivityCalendar user={user} />
-            <Leaderboard />
+            </div>
+            <Leaderboard user={user}/>
           </div>
         </div>
 

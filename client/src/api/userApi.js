@@ -104,4 +104,24 @@ export const fetchLeaderboard = async ()=>{
         return [];
     }
 };
+//delete from settings page
+export const deleteUserById = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // if your backend uses auth
+      },
+    });
 
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to delete user');
+    }
+
+    return await response.json(); // { message: 'User deleted successfully' }
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    throw err;
+  }
+};
