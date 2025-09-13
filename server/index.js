@@ -3,7 +3,8 @@ import cors from"cors";
 import dotenv from "dotenv";
 import {pool} from "./db/db.js"
 import cookieParser from "cookie-parser";
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
+// import http from "http";
 
 //ROUTES
 // import quizRoutes from "./routes/quiz.js";
