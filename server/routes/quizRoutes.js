@@ -1,8 +1,9 @@
 import express from 'express';
-import { getChallengeQuestions } from '../controllers/quizController.js';
+import { quizHandler } from '../controllers/quizController.js';
 
 const router = express.Router();
 
-router.get('/challenge', getChallengeQuestions);
+// Keep GET so frontend doesn't change
+router.get('/challenge', quizHandler);
 
-export default router;
+export default router;
