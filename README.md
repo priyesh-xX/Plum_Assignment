@@ -7,7 +7,7 @@ Gnosis is an intelligent, full-stack quizzing platform built for our universityâ
 ### Web
 1. Clone the repository:
 bash
-git clone https://github.com/Divlm10/PlumAssignmentTopic2.git
+git clone https://github.com/priyesh-xX/Plum_Assignment
 
 Install dependencies and start the project:
 cd PlumAssignmentTopic2
